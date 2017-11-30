@@ -8,7 +8,7 @@
 
 (def ip-r #"(?:\d{1,3}\.){3}\d{1,3}")
 
-(def not-empty? (comp not empty))
+(def not-empty? (comp not empty?))
 
 (def not-nil? (comp not nil?))
 
