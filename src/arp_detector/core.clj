@@ -52,7 +52,7 @@
 (defn start-main-loop [arp on-change]
   (loop []
     (Thread/sleep 1000)
-    (let [changes (diff (get-arp-table) arp)]
+    (let [changes (diff arp (get-arp-table))]
       (when (not-empty? changes)
         (on-change changes)))
     (recur)))
