@@ -30,24 +30,24 @@
 (defn prn-arp [arp]
   (print-table (stringify-keys arp)))
 
-(defn to-mac-ip-map [arp-item]
-  {(:mac arp-item) (:ip arp-item)})
+(defn to-ip-mac-map [arp-item]
+  {(:ip arp-item) (:mac arp-item)})
 
-(defn to-mac-ip [arp]
+(defn to-ip-mac [arp]
   (reduce #(merge (to-mac-ip-map %2) %1) {} arp))
 
-(defn changes-to-str [mac-ip arp-item]
-  (let [mac (:mac arp-item)]
-    (when-let [ip (get mac-ip (:mac arp-item))]
-      (when (not= ip (:ip arp-item))
-        (format "%s %s -> %s %s" mac ip mac (:ip arp-item))))))
+(defn changes-to-str [ip-mac arp-item]
+  (let [ip (:ip arp-item)]
+    (when-let [mac (get ip-mac (:ip arp-item))]
+      (when (not= mac (:mac arp-item))
+        (format "%s %s -> %s %s" ip mac ip (:mac arp-item))))))
 
 (defn conj-if [c v]
   (if (not-nil? v) (conj c v) c))
 
 (defn diff [arp1 arp2]
-  (let [mac-ip (to-mac-ip arp1)]
-    (reduce #(conj-if %1 (changes-to-str mac-ip %2)) '() arp2)))
+  (let [ip-mac (to-ip-mac arp1)]
+    (reduce #(conj-if %1 (changes-to-str ip-mac %2)) '() arp2)))
 
 (defn start-main-loop [arp on-change]
   (loop []
