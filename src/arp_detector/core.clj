@@ -23,7 +23,9 @@
   (map parse-arp-row (string/split t #"\n")))
 
 (defn get-arp-table []
-  (parse-arp-table (:out (shell/sh "arp" "-a"))))
+  (if-let [out (:out (shell/sh "arp" "-a"))]
+    (parse-arp-table out)
+    '()))
 
 (defn prn-arp [arp]
   (print-table (stringify-keys arp)))
