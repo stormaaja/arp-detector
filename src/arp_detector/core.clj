@@ -2,8 +2,7 @@
   (:require [clojure.java.shell :as shell]
             [clojure.string :as string]
             [clojure.pprint :refer [print-table]]
-            [clojure.walk :refer [stringify-keys]]
-            )
+            [clojure.walk :refer [stringify-keys]])
   (:gen-class))
 
 (def ip-r #"(?:\d{1,3}\.){3}\d{1,3}")
@@ -23,9 +22,10 @@
   (map parse-arp-row (string/split t #"\n")))
 
 (defn get-arp-table []
-  (if-let [out (:out (shell/sh "arp" "-a"))]
-    (parse-arp-table out)
-    '()))
+  (let [out (:out (shell/sh "arp" "-a"))]
+    (if (> (count out) 0)
+      (parse-arp-table out)
+      '())))
 
 (defn prn-arp [arp]
   (print-table (stringify-keys arp)))
