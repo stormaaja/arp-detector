@@ -34,7 +34,7 @@
   {(:ip arp-item) (:mac arp-item)})
 
 (defn to-ip-mac [arp]
-  (reduce #(merge (to-mac-ip-map %2) %1) {} arp))
+  (reduce #(merge (to-ip-mac-map %2) %1) {} arp))
 
 (defn changes-to-str [ip-mac arp-item]
   (let [ip (:ip arp-item)]
